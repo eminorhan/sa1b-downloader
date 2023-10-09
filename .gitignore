@@ -1,0 +1,17 @@
+# File extensions
+*.pt
+*.pth
+*.tar
+*.ckpt
+*.out
+*.npz
+*.png
+*.sh
+*.jpeg
+*.jpg
+
+# Directories
+**/__pycache__
+images/
+masks/
+raw/
