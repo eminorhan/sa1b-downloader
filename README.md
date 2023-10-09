@@ -1,7 +1,7 @@
 # SA-1B downloader
 This repo is based on the [SA-1B downloader repo by Konstantinos Kallidromitis](https://github.com/KKallidromitis/SA-1B-Downloader). It provides two additional functionalities over the original repo: 
 * deleting the raw data shard files once they are extracted.
-* allowing for a subset of the data to be downloaded only if disk space is limited.
+* allowing for only a subset of the data to be downloaded if disk space is limited.
 
 ## Requirements
 * Python >= 3.6
@@ -14,7 +14,7 @@ pip install requests
 
 ## Usage
 
-The [download.py]() script uses the provided [sa1b_links.txt]() file by default as the input file for downloading and extracting images:
+The [download.py](https://github.com/eminorhan/sa1b-downloader/blob/master/download.py) script uses the provided [sa1b_links.txt](https://github.com/eminorhan/sa1b-downloader/blob/master/sa1b_links.txt) file by default as the input file for downloading and extracting images:
 
 ```python
 python -u download.py \
