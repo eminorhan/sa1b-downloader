@@ -12,6 +12,10 @@
 
 # Directories
 **/__pycache__
+images_1000/
+images_100/
+images_10/
+images_1/
 images/
 masks/
 raw/
