@@ -58,7 +58,14 @@ def process_shard(args):
             except requests.exceptions.RequestException as e:
                 print(f"[NETWORK ERROR] {file_name} on attempt {attempt+1}: {e}")
                 if attempt < max_retries - 1:
-                    time.sleep(5) # Catch our breath before hitting the server again
+                    # EXPONENTIAL BACKOFF LOGIC
+                    # Attempt 0 fails: wait 5 * (3^0) = 5s
+                    # Attempt 1 fails: wait 5 * (3^1) = 15s
+                    # Attempt 2 fails: wait 5 * (3^2) = 45s
+                    # Attempt 3 fails: wait 5 * (3^3) = 135s
+                    backoff_time = 5 * (3 ** attempt)
+                    print(f"[BACKOFF] Waiting {backoff_time} seconds before retrying {file_name}...")
+                    time.sleep(backoff_time)
 
     # ==========================================
     # PHASE 2: EXTRACTION
