@@ -1,37 +1,26 @@
 # SA-1B downloader
-This repo is based on the [SA-1B downloader repo by Konstantinos Kallidromitis](https://github.com/KKallidromitis/SA-1B-Downloader). It provides two additional functionalities over the original repo: 
-* deleting the raw data shard files once they are extracted.
-* allowing for only a subset of the data to be downloaded if disk space is limited.
+A simple Python script to robustly download and extract the [SA-1B](https://ai.meta.com/datasets/segment-anything-downloads/) dataset, mostly written by Gemini. It implements the following features:
+
+* Resuming from partial downloads.
+* Retries in case of connection failures.
 
 ## Requirements
-* Python >= 3.6
-* requests >= 2.0
-
-Install with:
+The only external requirement is `requests`. Install it with:
 ```
 pip install requests
 ```
 
 ## Usage
-
-The [download.py](https://github.com/eminorhan/sa1b-downloader/blob/master/download.py) script uses the provided [sa1b_links.txt](https://github.com/eminorhan/sa1b-downloader/blob/master/sa1b_links.txt) file by default as the input file for downloading and extracting images:
+First, download the text file that contains the download links from [here](https://ai.meta.com/datasets/segment-anything-downloads/). Note that the links in this file are dynamic, so if you haven't downloaded the file recently, you will have to redownload it for fresh links. Then, simply run:
 
 ```python
-python -u download.py \
-    --processes 8 \
-    --input_file 'sa1b_links.txt' \
-    --raw_dir raw \
-    --images_dir images \
-    --masks_dir masks \
-    --num_files 48 \
-    --skip_existing
+python -u download.py
 ```
 
 This script takes the following arguments:
-* `processes`: number of processes to use for downloading and extracting files (default: `4`)
-* `input_file`: path to the input file containing file names and URLs (default: `sa1b_links.txt`)
+* `processes`: number of parallel processes to use for downloading and extracting files (default: `16`)
+* `input_file`: path to the text file containing the download links (default: `sa1b_links.txt`)
 * `raw_dir`: directory to store downloaded data shard files (default: `raw`)
 * `images_dir`: directory to store extracted jpg files (default: `images`)
-* `masks_dir`: directory to store extracted json files (default: `masks`)
-* `num_files`: number of data shard files to download and extract (default: `1000`, *i.e.* the full dataset)
-* `skip_existing`: skip extraction if the file has already been extracted (default: `False`)
+* `ann_dir`: directory to store extracted json files (default: `annotations`)
+* `retries`: maximum number of retries if the download fails for any reason (default: `5`)

@@ -1,21 +1,9 @@
 # File extensions
-*.pt
-*.pth
-*.tar
-*.ckpt
 *.out
-*.npz
-*.png
-*.sh
-*.jpeg
-*.jpg
+*.txt
 
 # Directories
 **/__pycache__
-images_1000/
-images_100/
-images_10/
-images_1/
+annotations/
 images/
-masks/
 raw/
