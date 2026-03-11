@@ -74,6 +74,11 @@ def process_shard(args):
         print(f"[FAILED] {file_name} failed to download after {max_retries} attempts. Skipping extraction.")
         return
 
+    # Check if the file is actually a tar file before extracting (there may be a single txt file in the download list)
+    if not file_name.endswith('.tar'):
+        print(f"[INFO] {file_name} is not a .tar archive. Skipping extraction.")
+        return
+
     # Create subdirectories for this specific shard to keep things organized
     shard_name = file_name.replace('.tar', '')
     shard_img_dir = os.path.join(images_dir, shard_name)

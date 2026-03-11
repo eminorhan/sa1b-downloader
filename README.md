@@ -11,7 +11,7 @@ pip install requests
 ```
 
 ## Usage
-First, download the text file that contains the download links from [here](https://ai.meta.com/datasets/segment-anything-downloads/). Note that the links in this file are dynamic, so if you haven't downloaded the file recently, you will have to redownload it for fresh links. Then, simply run:
+First, download the text file that contains the download links from [here](https://ai.meta.com/datasets/segment-anything-downloads/). Note that the links in this file are dynamic, so if you haven't downloaded the file recently, you may have to redownload it for fresh links. Then, simply run:
 
 ```python
 python -u download.py
@@ -23,4 +23,4 @@ This script takes the following arguments:
 * `raw_dir`: directory to store downloaded data shard files (default: `raw`)
 * `images_dir`: directory to store extracted jpg files (default: `images`)
 * `ann_dir`: directory to store extracted json files (default: `annotations`)
-* `retries`: maximum number of retries if the download fails for any reason (default: `5`)
+* `retries`: maximum number of retries if the connection fails for any reason (default: `5`)
