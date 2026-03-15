@@ -24,3 +24,16 @@ This script takes the following arguments:
 * `images_dir`: directory to store extracted jpg files (default: `images`)
 * `ann_dir`: directory to store extracted json files (default: `annotations`)
 * `retries`: maximum number of retries if the connection fails for any reason (default: `5`)
+
+### Sorting the contents of the sharded `.tar` files and repacking them
+Instead of extracting the contents of the sharded `.tar` archives into separate image and annotation directories, you might want to use them directly as a `webdataset`. However, in the original data released by Meta, the files within the sharded `.tar` archives are randomly ordered. To be able to use the `.tar` archives as a `webdataset`, you will need to reorder their contents so that the image files and their corresponding annotation files within each `.tar` file are correctly paired together. I provide a simple script here (`repack.py`) that does this. You can run this script as follows: 
+
+```python
+python -u repack.py
+```
+
+This script takes the following arguments:
+* `raw_dir`: directory where the original unsorted `.tar` files are stored (default: `raw`)
+* `sorted_dir`: directory where the final correctly sorted `.tar` files will be saved (default: `sorted`)
+* `temp_dir`: a temporary directory to be used during sorting (default: `temp`)
+* `num_workers`: number of parallel workers (default: `16`)
