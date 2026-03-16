@@ -13,6 +13,7 @@ pip install requests
 ```
 
 ## Usage
+### Downloading and (optionally) extracting the `.tar` files
 First, download the text file that contains the download links from [here](https://ai.meta.com/datasets/segment-anything-downloads/). Note that the links in this file are dynamic, so if you haven't downloaded the file recently, you may have to redownload it for fresh links. Then, simply run:
 
 ```python
