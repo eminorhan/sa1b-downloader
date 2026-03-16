@@ -7,7 +7,9 @@ from multiprocessing import Pool
 
 def process_shard(args):
     """Handles the robust downloading and extracting of a single shard."""
-    file_name, url, raw_dir, images_dir, ann_dir, max_retries = args
+    
+    # Unpack the args
+    file_name, url, raw_dir, images_dir, ann_dir, max_retries, extract_flag = args
     
     final_tar_path = os.path.join(raw_dir, file_name)
     part_file_path = os.path.join(raw_dir, f"{file_name}.part")
@@ -59,10 +61,6 @@ def process_shard(args):
                 print(f"[NETWORK ERROR] {file_name} on attempt {attempt+1}: {e}")
                 if attempt < max_retries - 1:
                     # EXPONENTIAL BACKOFF LOGIC
-                    # Attempt 0 fails: wait 5 * (3^0) = 5s
-                    # Attempt 1 fails: wait 5 * (3^1) = 15s
-                    # Attempt 2 fails: wait 5 * (3^2) = 45s
-                    # Attempt 3 fails: wait 5 * (3^3) = 135s
                     backoff_time = 5 * (3 ** attempt)
                     print(f"[BACKOFF] Waiting {backoff_time} seconds before retrying {file_name}...")
                     time.sleep(backoff_time)
@@ -70,6 +68,11 @@ def process_shard(args):
     # ==========================================
     # PHASE 2: EXTRACTION
     # ==========================================
+
+    # Check if the user wants to extract the files
+    if not extract_flag:
+        return
+
     if not download_complete:
         print(f"[FAILED] {file_name} failed to download after {max_retries} attempts. Skipping extraction.")
         return
@@ -103,7 +106,6 @@ def process_shard(args):
     except tarfile.TarError as e:
         print(f"[CORRUPTION ERROR] Could not extract {file_name}. The archive might be broken: {e}")
 
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Robust SA-1B Downloader')
     parser.add_argument('--input_file', type=str, default='sa1b_links.txt', help='Path to the links text file')
@@ -112,6 +114,8 @@ if __name__ == '__main__':
     parser.add_argument('--ann_dir', type=str, default='annotations', help='Where to save the .json files')
     parser.add_argument('--processes', type=int, default=16, help='Number of parallel downloads')
     parser.add_argument('--retries', type=int, default=5, help='How many times to retry a failed download')
+    parser.add_argument('--extract', action='store_true', help='Extract the downloaded .tar files (default: download only without extracting)')
+    
     args = parser.parse_args()
 
     # Create necessary root directories
@@ -129,7 +133,8 @@ if __name__ == '__main__':
             if len(parts) >= 2: 
                 file_name = parts[0]
                 url = parts[1]
-                tasks.append((file_name, url, args.raw_dir, args.images_dir, args.ann_dir, args.retries))
+                # Pass args.extract into the task tuple
+                tasks.append((file_name, url, args.raw_dir, args.images_dir, args.ann_dir, args.retries, args.extract))
 
     print(f"Loaded {len(tasks)} files to process. Starting {args.processes} workers...")
 
