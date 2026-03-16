@@ -4,7 +4,7 @@ A simple Python utility to robustly download and extract the [SA-1B](https://ai.
 * Resuming from partial downloads.
 * Retries in case of connection failures.
 * (Optional) extracting the downloaded `.tar` files.
-* (Optional) reordering the contents of the downloaded `.tar` files to make them compatible with `webdataset`.
+* (Optional) reordering the contents of the downloaded `.tar` files to make them compatible with [`webdataset`](https://github.com/webdataset/webdataset).
 
 ## Requirements
 The only external requirement is `requests`. Install it with:
